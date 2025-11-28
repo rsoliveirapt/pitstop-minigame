@@ -3,6 +3,12 @@ let jogoAtivo = false; // indica se o jogo ja comecou
 let tempoInicio = 0; // guarda o momento em que o jogo comecou
 let tempoAtual = 0; // tempo decorrido
 let melhorTempo = null; // melhor tempo registrado
+let emContagemPartida = false;
+let tempoInicioContagem = 0;
+let numLuzes = 5;
+let numLuzesAcesas = 0;
+let somPartida;
+let ultimaLuzTocada = 0;
 
 //Variaveis de Pontuacao
 let pontos = 0; // pontuacao do jogador
@@ -50,6 +56,8 @@ function preload() {
   imgPneuTrasDir   = loadImage("Images/redbull/redbull-pneu-traseiro-direito.svg");
   imgAsaDianteira  = loadImage("Images/redbull/redbull-asa-dianteira.svg");
   imgAsaTraseira   = loadImage("Images/redbull/redbull-asa-traseira.svg");
+
+  somPartida = loadSound("assets/starting-sequence.mp3");
 }
 
 
@@ -92,6 +100,15 @@ function iniciarJogo() {
   gerarNovoPedido();
 }
 
+function iniciarSequenciaPartida() {
+  emContagemPartida = true;
+  jogoAtivo = false;
+  numLuzesAcesas = 0;
+  ultimaLuzTocada = 0;
+  tempoInicioContagem = millis();
+  mensagem = "Preparar para a pitstop..."
+}
+
 function gerarNovoPedido() {
   let indice = Math.floor(Math.random() * partes.length);
   pedidoAtual = partes[indice];
@@ -99,6 +116,15 @@ function gerarNovoPedido() {
 
 // Funcao captura de teclas
 function keyPressed() {
+  if (key === " " || keyCode === 32)  {
+    userStartAudio(); // necessario para ativar audio no browser
+
+    if (!jogoAtivo && !emContagemPartida) {
+      iniciarSequenciaPartida();
+    }
+    return;
+  }
+
   if (!jogoAtivo || pedidoAtual === null) {
     return;
   }
@@ -167,6 +193,67 @@ function estaParteAtiva(nomeParte) {
   } 
   return pedidoAtual.nome === nomeParte;
 }
+
+function atualizarSequenciaPartida() {
+  let decorrido = millis() - tempoInicioContagem;
+
+  let novasluzes = Math.floor(decorrido / 1000);
+  if (novasluzes > numLuzes) {
+    novasluzes = numLuzes;
+  }
+  numLuzesAcesas = novasluzes;
+
+  if (numLuzesAcesas > ultimaLuzTocada) {
+    if (somPartida && somPartida.isLoaded()) {
+      somPartida.play();
+    }
+    ultimaLuzTocada = numLuzesAcesas;
+  }
+
+  let tempoParaArrancar = (numLuzes + 1) * 1000;
+
+  if (decorrido >= tempoParaArrancar) {
+    emContagemPartida = false;
+
+    if (somPartida && somPartida.isLoaded()) {
+      somPartida.play();
+    }
+
+    iniciarJogo();
+  }
+}
+
+function desenharLuzesPartida() {
+  let larguraTotal = 300;
+  let alturaLuz = 40;
+  let espacamento = 10;
+  let raio = 25;
+  
+  let startX = (width / 2) - (larguraTotal / 2);
+  let y = height / 2 - 50;
+
+  noStroke();
+
+  for (let i = 0; i < numLuzes; i++) {
+    let x = startX + i * (larguraTotal - raio) / (numLuzes - 1);
+
+    if (i < numLuzesAcesas) {
+      fill(255, 0, 0);
+    } else {
+      fill(100, 0, 0);
+    } 
+
+    circle (x, y, raio);
+  }
+
+  fill(255);
+  textSize(18);
+  textAlign(CENTER, BOTTOM);
+  text("LUZES DE PARTIDA", width /2, y - 40); 
+  
+}
+
+
 
 // Funcao que desenha o Carro
 function desenharCarro() {
@@ -238,6 +325,18 @@ function desenharCarro() {
 // PARTE VISUAL
 function draw() {
   background(30);
+
+  if (emContagemPartida) {
+    atualizarSequenciaPartida();
+    desenharLuzesPartida();
+
+    fill(255);
+    textSize(10);
+    textAlign(CENTER, CENTER);
+    text("Pressiona ESPACO para iniciar a pitstop", width / 2, height / 2 + 80 );
+
+    return;
+  }
 
   if (jogoAtivo) {
 
