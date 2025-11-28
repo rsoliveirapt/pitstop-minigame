@@ -10,10 +10,6 @@ let erros = 0; // numero de erros cometidos
 let maxErros = 5; // numero maximo de erros permitidos
 
 //Variaveis para os carros
-let escalaCarro = Math.min(width * 0.5, height * 0.6);
-let larguraCarro = escalaCarro;
-let alturaCarro = escalaCarro * 0.66;
-
 let imgCarroBase;
 let imgPneuFrenteEsq;
 let imgPneuFrenteDir;
@@ -45,15 +41,15 @@ let totalPartes = 6; // total de partes a trocar, posso acrescentar mais depois
 //preload das imagens do carro
 function preload() {
   // ficheiro base do carro
-  imgCarroBase = loadImage("Images/redbull.svg");
+  imgCarroBase = loadImage("Images/redbull/redbull.svg");
 
   // peças em destaque
-  imgPneuFrenteEsq = loadImage("Images/redbull-pneu-dianteiro-esquerdo.svg");
-  imgPneuFrenteDir = loadImage("Images/redbull-pneu-dianteiro-direito.svg");
-  imgPneuTrasEsq   = loadImage("Images/redbull-pneu-traseiro-esquerdo.svg");
-  imgPneuTrasDir   = loadImage("Images/redbull-pneu-traseiro-direito.svg");
-  imgAsaDianteira  = loadImage("Images/redbull-asa-dianteira.svg");
-  imgAsaTraseira   = loadImage("Images/redbull-asa-traseira.svg");
+  imgPneuFrenteEsq = loadImage("Images/redbull/redbull-pneu-dianteiro-esquerdo.svg");
+  imgPneuFrenteDir = loadImage("Images/redbull/redbull-pneu-dianteiro-direito.svg");
+  imgPneuTrasEsq   = loadImage("Images/redbull/redbull-pneu-traseiro-esquerdo.svg");
+  imgPneuTrasDir   = loadImage("Images/redbull/redbull-pneu-traseiro-direito.svg");
+  imgAsaDianteira  = loadImage("Images/redbull/redbull-asa-dianteira.svg");
+  imgAsaTraseira   = loadImage("Images/redbull/redbull-asa-traseira.svg");
 }
 
 
