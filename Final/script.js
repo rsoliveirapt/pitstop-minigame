@@ -2,6 +2,12 @@
 let jogoAtivo = false; // indica se o jogo ja comecou
 let tempoInicio = 0; // guarda o momento em que o jogo comecou
 let tempoAtual = 0; // tempo decorrido
+let melhorTempo = null; // melhor tempo registrado
+
+//Variaveis de Pontuacao
+let pontos = 0; // pontuacao do jogador
+let erros = 0; // numero de erros cometidos
+let maxErros = 5; // numero maximo de erros permitidos
 
 // Adicionar lista das partes do carro e as suas teclas correspondentes
 let partes = [
@@ -29,6 +35,12 @@ function setup() {
   let canvas = createCanvas (windowWidth, windowHeight);
   canvas.parent("game-container");
 
+  // carregar melhor tempo do localStorage
+  let salvo = localStorage.getItem("melhorTempoPitstop");
+  if (salvo !== null) {
+    melhorTempo = parseFloat(salvo);
+  }
+
   //fundo inicial
   background(30);
 
@@ -49,6 +61,10 @@ function iniciarJogo() {
   tempoInicio = millis(); //marca o tempo de inicio
   partesConcluidas = 0;
   mensagem = "";
+
+  pontos = 0;
+  erros = 0;
+
   gerarNovoPedido();
 }
 
@@ -67,7 +83,8 @@ function keyPressed() {
 
   if (teclaCarregada === pedidoAtual.tecla) {
     mensagem = "Correto! (" + teclaCarregada + ")";
-    partesConcluidas++;
+    pontos = pontos + 10; // +10 pontos por cada certo
+    partesConcluidas++; // +1 parte concluida
 
     if (partesConcluidas >= totalPartes) {
       terminarJogo();
@@ -83,8 +100,15 @@ function keyPressed() {
 function terminarJogo() {
   jogoAtivo = false;
   let tempoTotalSegundos = (millis() - tempoInicio) / 1000;
-  mensagem = "Pitstop concluido em " + tempoTotalSegundos.toFixed(2) + " segundos!";
+  if (melhorTempo === null || tempoTotalSegundos < melhorTempo) {
+    melhorTempo = tempoTotalSegundos;
+    localStorage.setItem("melhorTempoPitStop", melhorTempo);
+    mensagem = "Novo Record! Tempo: " + tempoTotalSegundos.toFixed(2) + "s";
+  } else {
+    mensagem = "Pitstop concluido em " + tempoTotalSegundos.toFixed(2) + "s";
+  
   pedidoAtual = null;
+}
 }
 
 // Funcao auxiiliar para saber se a peca esta ativa
@@ -94,6 +118,12 @@ function estaParteAtiva(nomeParte) {
   } 
   return pedidoAtual.nome === nomeParte;
 }
+
+
+
+
+
+
 
 // Funcao que desenha o Carro
 function desenharCarro() {
@@ -181,6 +211,12 @@ function draw() {
       text("Pressiona: " + pedidoAtual.nome + " (Tecla " + pedidoAtual.tecla + ")", width/2, height/2); 
     }
 
+    if (melhorTempo !== null) {
+      textSize(16);
+      textAlign(CENTER, TOP);
+      text("Melhor Tempo: " + melhorTempo.toFixed(2) + "s", width /2, 85);
+    }
+
     //motrar feedback
     textSize(16);
     text(mensagem, width/2, height - 50);
@@ -206,5 +242,11 @@ function draw() {
     textSize(20);
     textAlign(CENTER, CENTER);
     text("Clique no botão 'Iniciar Pitstop' para comecar.", width/2, height/2);
+
+    if (melhorTempo !== null) {
+      textSize(16);
+      textAlign(CENTER, TOP);
+      text("Melhor Tempo: " + melhorTempo.toFixed(2) + "s", width /2, 20);
+    }
   }
 }
