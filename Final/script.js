@@ -32,7 +32,7 @@ let totalPartes = 6; // total de partes a trocar, posso acrescentar mais depois
 //Funcoes
 function setup() {
   // criar um canvas e colocar dentro do div #game-container
-  let canvas = createCanvas (windowWidth, windowHeight);
+  let canvas = createCanvas (600, 400);
   canvas.parent("game-container");
 
   // carregar melhor tempo do localStorage
@@ -92,7 +92,24 @@ function keyPressed() {
       gerarNovoPedido(); 
     }
   } else {
+    //Erro
     mensagem = "Errado! Carregaste " + teclaCarregada + ", mas a certa e " + pedidoAtual.tecla + ".";
+
+    // aumentar erros
+    erros++;
+
+    // penalizacao de tempo + 1segundo
+    TempoInicio = TempoInicio - 1000;
+
+    pontos = pontos - 5; // -5 pontos por cada erro
+    if (pontos < 0) {
+      pontos = 0; // evitar pontos negativos
+    }
+
+    // se exceder o nr maximo de erros, termina o jogo
+    if (erros >= maxErros) {
+      terminarJogoFalha();
+    }
   }
 }
 
@@ -109,6 +126,12 @@ function terminarJogo() {
   
   pedidoAtual = null;
 }
+}
+// Funcao Terminar Jogo por demasiados erros
+function terminarJogoFalha() {
+  jogoAtivo = false;
+  mensagem = "Pitstop Falhou! Excedeste o numero maximo de erros (" + maxErros + "). Tenta novamente.";
+  pedidoAtual = null;
 }
 
 // Funcao auxiiliar para saber se a peca esta ativa
@@ -211,11 +234,29 @@ function draw() {
       text("Pressiona: " + pedidoAtual.nome + " (Tecla " + pedidoAtual.tecla + ")", width/2, height/2); 
     }
 
+    // mostrar pontos da ultima ronda
+    textSize(16);
+    textAlign(CENTER, TOP);
+    text("Pontos da última ronda: " + pontos, width / 2, 60);
+
     if (melhorTempo !== null) {
       textSize(16);
       textAlign(CENTER, TOP);
-      text("Melhor Tempo: " + melhorTempo.toFixed(2) + "s", width /2, 85);
+      text("Melhor Tempo: " + melhorTempo.toFixed(2) + "s", width /2, 90);
     }
+
+    //pontuacao
+    textSize(16);
+    textAlign(LEFT, TOP);
+    text("Pontos: " + pontos, 20, 20);
+
+    //erros
+    textAlign(RIGHT, TOP);
+    text("Erros: " + erros + " / " + maxErros, width - 20, 20);
+
+    //volta a alinhar ao centro para o resto do jogo
+    textAlign(CENTER, TOP);
+
 
     //motrar feedback
     textSize(16);
