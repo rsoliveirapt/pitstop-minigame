@@ -2,18 +2,44 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
     <title>Pitstop F1 - Minijogo</title>
 </head>
 <body>
-    <h1>Pitstop F1 - Minijogo</h1>
-    <p>Carrega em "Iniciar" e depois segue as instruções no ecrã.</p>
+    <div class="page">
+    <header class="top-bar">
+        <div class="top-left">
+            <h1>Pitstop F1 - Minijogo</h1>
+            <p class="subtitle">
+                Carrega em <strong> Iniciar Pitstop</strong> ou prime <strong> Espaço </strong> para começar!
+            </p>
 
-    <!-- Botão para começar o jogo -->
-    <button id="start-btn">Iniciar Pitstop</button>
+            <button id="start-btn" class="btn-primary">Iniciar Pitstop</button>
 
-    <!-- Aqui o p5.js vai desenhar o jogo -->
-    <div id="game-container"></div>
+            <p class="hint">
+                Teclas: <span>Q</span>, <span>W</span>, <span>E</span>, <span>R</span> ou <span>T</span>
+            </p>
+        </div>
 
+        <div class="top-right">
+            <div class="info-card">
+                <p> Completar o pitstop o mais rápido possivel, acertando nas pecas indicadas</p>
+                <ul>
+                    <li>✔ Acerto: ganha pontos</li>
+                    <li>✘ Erro: perde pontos e es penalizado</li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-area">
+        <div id="game-container"></div>
+    </main>
+
+    <footer class="footer">
+        <small>Trabalho Realizado por Ricardo Oliveira - Programacao Criativa</small>
+    </footer>
+    </div>
     <!-- código -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/addons/p5.sound.min.js"></script>
