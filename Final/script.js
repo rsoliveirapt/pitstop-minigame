@@ -32,7 +32,7 @@ let totalPartes = 6; // total de partes a trocar, posso acrescentar mais depois
 //Funcoes
 function setup() {
   // criar um canvas e colocar dentro do div #game-container
-  let canvas = createCanvas (600, 400);
+  let canvas = createCanvas (windowWidth, windowHeight);
   canvas.parent("game-container");
 
   // carregar melhor tempo do localStorage
