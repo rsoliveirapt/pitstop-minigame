@@ -9,6 +9,7 @@ let numLuzes = 5;
 let numLuzesAcesas = 0;
 let somPartida;
 let ultimaLuzTocada = 0;
+let imgBackground;
 
 //Variaveis de Pontuacao
 let pontos = 0; // pontuacao do jogador
@@ -58,6 +59,7 @@ function preload() {
   imgAsaTraseira   = loadImage("Images/redbull/redbull-asa-traseira.svg");
 
   somPartida = loadSound("assets/starting-sequence.mp3");
+  imgBackground = loadImage("Images/background.svg");
 }
 
 
@@ -67,14 +69,20 @@ function setup() {
   let canvas = createCanvas (windowWidth, windowHeight);
   canvas.parent("game-container");
 
+  canvas.elt.tabIndex = 1; // tornar o canvas focavel
+  canvas.elt.focus(); // focar o canvas para captar teclas
+
   // carregar melhor tempo do localStorage
   let salvo = localStorage.getItem("melhorTempoPitstop");
   if (salvo !== null) {
     melhorTempo = parseFloat(salvo);
   }
 
-  //fundo inicial
-  background(30);
+  if (imgBackground)  {
+    image(imgBackground, 0, 0, width, height);
+  } else {
+    background(30);
+  }
 
   //escrever uma mensagem inicial
   fill(255);
@@ -122,7 +130,7 @@ function keyPressed() {
     if (!jogoAtivo && !emContagemPartida) {
       iniciarSequenciaPartida();
     }
-    return;
+    return false;
   }
 
   if (!jogoAtivo || pedidoAtual === null) {
@@ -250,7 +258,7 @@ function desenharLuzesPartida() {
   textSize(18);
   textAlign(CENTER, BOTTOM);
   text("LUZES DE PARTIDA", width /2, y - 40); 
-  
+
 }
 
 
@@ -324,7 +332,12 @@ function desenharCarro() {
 
 // PARTE VISUAL
 function draw() {
-  background(30);
+
+  if (imgBackground)  {
+    image(imgBackground, 0, 0, width, height);
+  } else {
+    background(30);
+  }
 
   if (emContagemPartida) {
     atualizarSequenciaPartida();
