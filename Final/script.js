@@ -194,6 +194,9 @@ function desenharCarro() {
   // 2) desenhar apenas a peça ativa por cima
   if (pedidoAtual !== null) {
 
+    // ativar overlay verde para destacar parte
+    tint(0, 255, 0);
+
     if (estaParteAtiva("Pneu dianteiro esquerdo") && imgPneuFrenteEsq) {
       image(imgPneuFrenteEsq, cx, cy, larguraCarro, alturaCarro);
     }
@@ -220,8 +223,7 @@ function desenharCarro() {
   }
 
   // voltar aos modos normais
-  imageMode(CORNER);
-  rectMode(CORNER);
+  noTint();
 }
 
 
@@ -268,12 +270,12 @@ function draw() {
 
     // PEDIDO ATUAL (NO MEIO)
     if (pedidoAtual !== null) {
-      textAlign(CENTER, CENTER);
+      textAlign(CENTER, TOP);
       textSize(18);
       text(
         "Pressiona: " + pedidoAtual.nome + " (Tecla " + pedidoAtual.tecla + ")",
         width / 2,
-        height / 2 - 80
+        height / 2 - 350
       );
     }
 
