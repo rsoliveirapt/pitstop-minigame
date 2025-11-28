@@ -78,18 +78,6 @@ function setup() {
     melhorTempo = parseFloat(salvo);
   }
 
-  if (imgBackground)  {
-    image(imgBackground, 0, 0, width, height);
-  } else {
-    background(30);
-  }
-
-  //escrever uma mensagem inicial
-  fill(255);
-  textSize(20);
-  textAlign(CENTER, CENTER);
-  text("Clique no botão 'Iniciar Pitstop' para comecar.", width/2, height/2);
-
   // ligar o botao de iniciar ao jogo
   const botaoIniciar = document.getElementById("start-btn");
   botaoIniciar.addEventListener("click", iniciarJogo);
@@ -327,17 +315,32 @@ function desenharCarro() {
 
 
 
+function desenharBackground() {
+  background(30);
 
+  if (!imgBackground) {
+    return;
+  }
+
+  imageMode(CENTER);
+
+  let imgW = imgBackground.width;
+  let imgH = imgBackground.height;
+
+  let escala = Math.max(width / imgW, height / imgH);
+  let w = imgW * escala;
+  let h = imgH * escala;
+
+  image (imgBackground, width / 2, height / 2, w, h);
+
+  imageMode(CORNER);
+}
 
 
 // PARTE VISUAL
 function draw() {
 
-  if (imgBackground)  {
-    image(imgBackground, 0, 0, width, height);
-  } else {
-    background(30);
-  }
+  desenharBackground();
 
   if (emContagemPartida) {
     atualizarSequenciaPartida();
