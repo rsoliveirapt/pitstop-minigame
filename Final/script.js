@@ -99,7 +99,7 @@ function keyPressed() {
     erros++;
 
     // penalizacao de tempo + 1segundo
-    TempoInicio = TempoInicio - 1000;
+    tempoInicio = tempoInicio - 1000;
 
     pontos = pontos - 5; // -5 pontos por cada erro
     if (pontos < 0) {
@@ -117,16 +117,18 @@ function keyPressed() {
 function terminarJogo() {
   jogoAtivo = false;
   let tempoTotalSegundos = (millis() - tempoInicio) / 1000;
+
   if (melhorTempo === null || tempoTotalSegundos < melhorTempo) {
     melhorTempo = tempoTotalSegundos;
-    localStorage.setItem("melhorTempoPitStop", melhorTempo);
+    localStorage.setItem("melhorTempoPitstop", melhorTempo);
     mensagem = "Novo Record! Tempo: " + tempoTotalSegundos.toFixed(2) + "s";
   } else {
     mensagem = "Pitstop concluido em " + tempoTotalSegundos.toFixed(2) + "s";
-  
+  }
+
   pedidoAtual = null;
 }
-}
+
 // Funcao Terminar Jogo por demasiados erros
 function terminarJogoFalha() {
   jogoAtivo = false;
@@ -228,66 +230,69 @@ function draw() {
     // atualizar tempo
     tempoAtual = millis() - tempoInicio;
 
-    if (pedidoAtual !== null) {
-      textSize(18);
-      textAlign(CENTER, CENTER);
-      text("Pressiona: " + pedidoAtual.nome + " (Tecla " + pedidoAtual.tecla + ")", width/2, height/2); 
-    }
-
-    // mostrar pontos da ultima ronda
-    textSize(16);
+    // TÍTULO
+    fill(255);
+    textSize(24);
     textAlign(CENTER, TOP);
-    text("Pontos da última ronda: " + pontos, width / 2, 60);
+    text("PITSTOP EM CURSO!", width / 2, 10);
 
+    // TEMPO ATUAL
+    textSize(18);
+    text("Tempo: " + (tempoAtual / 1000).toFixed(2) + "s", width / 2, 40);
+
+    // MELHOR TEMPO
     if (melhorTempo !== null) {
       textSize(16);
-      textAlign(CENTER, TOP);
-      text("Melhor Tempo: " + melhorTempo.toFixed(2) + "s", width /2, 90);
+      text("Melhor Tempo: " + melhorTempo.toFixed(2) + "s", width / 2, 65);
     }
 
-    //pontuacao
+    // PONTOS (ESQUERDA) E ERROS (DIREITA)
     textSize(16);
     textAlign(LEFT, TOP);
     text("Pontos: " + pontos, 20, 20);
 
-    //erros
     textAlign(RIGHT, TOP);
     text("Erros: " + erros + " / " + maxErros, width - 20, 20);
 
-    //volta a alinhar ao centro para o resto do jogo
-    textAlign(CENTER, TOP);
+    // PEDIDO ATUAL (NO MEIO)
+    if (pedidoAtual !== null) {
+      textAlign(CENTER, CENTER);
+      textSize(18);
+      text(
+        "Pressiona: " + pedidoAtual.nome + " (Tecla " + pedidoAtual.tecla + ")",
+        width / 2,
+        height / 2 - 80
+      );
+    }
 
-
-    //motrar feedback
-    textSize(16);
-    text(mensagem, width/2, height - 50);
-
-    // mostrar progresso
+    // PROGRESSO
     textSize(14);
-    text("Partes Concluidas: " + partesConcluidas + " / " + totalPartes, width/2, height - 80);
-
-    // aqui depois vamos desenhar o carro, o pedido de tecla, etc.
-    fill(255);
-    textSize(24);
     textAlign(CENTER, TOP);
-    text("PITSTOP EM CURSO!", width/2, 20);
+    text(
+      "Partes Concluidas: " + partesConcluidas + " / " + totalPartes,
+      width / 2,
+      height - 40
+    );
 
-    textSize(18);
-    text("Tempo: " + (tempoAtual / 1000).toFixed(2) + "s", width/2, 60);
+    // FEEDBACK (ACERTO/ERRO)
+    textSize(16);
+    text(mensagem, width / 2, height - 50);
 
-    // Desenhar o carro
+    // DESENHAR O CARRO
     desenharCarro();
+
   } else {
-    // estado inicial / parado
+    // ESTADO INICIAL / PARADO
     fill(255);
     textSize(20);
     textAlign(CENTER, CENTER);
-    text("Clique no botão 'Iniciar Pitstop' para comecar.", width/2, height/2);
+    text("Clique no botão 'Iniciar Pitstop' para comecar.", width / 2, height / 2);
 
     if (melhorTempo !== null) {
       textSize(16);
       textAlign(CENTER, TOP);
-      text("Melhor Tempo: " + melhorTempo.toFixed(2) + "s", width /2, 20);
+      text("Melhor Tempo: " + melhorTempo.toFixed(2) + "s", width / 2, 20);
+      text("Pontos da última ronda: " + pontos, width / 2, 40);
     }
   }
 }
