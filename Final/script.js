@@ -9,6 +9,19 @@ let pontos = 0; // pontuacao do jogador
 let erros = 0; // numero de erros cometidos
 let maxErros = 5; // numero maximo de erros permitidos
 
+//Variaveis para os carros
+let escalaCarro = Math.min(width * 0.5, height * 0.6);
+let larguraCarro = escalaCarro;
+let alturaCarro = escalaCarro * 0.66;
+
+let imgCarroBase;
+let imgPneuFrenteEsq;
+let imgPneuFrenteDir;
+let imgPneuTrasEsq;
+let imgPneuTrasDir;
+let imgAsaDianteira;
+let imgAsaTraseira; 
+
 // Adicionar lista das partes do carro e as suas teclas correspondentes
 let partes = [
   { nome: "Pneu dianteiro esquerdo", tecla: "Q" },
@@ -28,6 +41,21 @@ let mensagem = "";
 // progresso
 let partesConcluidas = 0;
 let totalPartes = 6; // total de partes a trocar, posso acrescentar mais depois
+
+//preload das imagens do carro
+function preload() {
+  // ficheiro base do carro
+  imgCarroBase = loadImage("Images/redbull.svg");
+
+  // peças em destaque
+  imgPneuFrenteEsq = loadImage("Images/redbull-pneu-dianteiro-esquerdo.svg");
+  imgPneuFrenteDir = loadImage("Images/redbull-pneu-dianteiro-direito.svg");
+  imgPneuTrasEsq   = loadImage("Images/redbull-pneu-traseiro-esquerdo.svg");
+  imgPneuTrasDir   = loadImage("Images/redbull-pneu-traseiro-direito.svg");
+  imgAsaDianteira  = loadImage("Images/redbull-asa-dianteira.svg");
+  imgAsaTraseira   = loadImage("Images/redbull-asa-traseira.svg");
+}
+
 
 //Funcoes
 function setup() {
@@ -144,75 +172,63 @@ function estaParteAtiva(nomeParte) {
   return pedidoAtual.nome === nomeParte;
 }
 
-
-
-
-
-
-
 // Funcao que desenha o Carro
 function desenharCarro() {
-  //centro do carro
+  // centro do ecrã
   let cx = width / 2;
-  let cy = height / 2 + 40;
+  let cy = height / 2;
 
-  //corpo do carro
-  fill(80);
-  rectMode(CENTER);
-  rect(cx, cy, 80, 140); //corpo principal
+  // os SVGs têm proporção 2000x3000 (largura x altura) => 2:3 (vertical)
+  // vamos ajustar a altura do carro a 60% da altura do ecrã
+  let alturaCarro = height * 0.6;
+  let larguraCarro = alturaCarro * (2 / 3); // 2:3
 
-  //pneus
-  //pneu dianteiro esquerdo (Q)
-  if (estaParteAtiva("Pneu dianteiro esquerdo")) {
-    fill(0, 255, 0); //verde se ativo, realca a peca ativa
+  imageMode(CENTER);
+
+  // 1) desenhar carro base
+  if (imgCarroBase) {
+    image(imgCarroBase, cx, cy, larguraCarro, alturaCarro);
   } else {
-    fill(150);
+    // fallback simples caso imagem nao carregue
+    fill(200, 0, 0);
+    rectMode(CENTER);
+    rect(cx, cy, 80, 140);
   }
-  rect(cx - 55, cy - 60, 20, 30);
 
-  //pneu dianteiro direito (W)
-  if (estaParteAtiva("Pneu dianteiro direito")) {
-    fill(0, 255, 0);
-  } else {
-    fill(150);
-  }   
-  rect(cx + 55, cy - 60, 20, 30);
+  // 2) desenhar apenas a peça ativa por cima
+  if (pedidoAtual !== null) {
 
-  //pneu traseiro esquerdo (A)
-  if (estaParteAtiva("Pneu traseiro esquerdo")) {
-    fill(0, 255, 0);
-  } else {
-    fill(150);
-  } 
-  rect(cx - 55, cy + 60, 20, 30);
+    if (estaParteAtiva("Pneu dianteiro esquerdo") && imgPneuFrenteEsq) {
+      image(imgPneuFrenteEsq, cx, cy, larguraCarro, alturaCarro);
+    }
 
-  //pneu traseiro direito (S)
-  if (estaParteAtiva("Pneu traseiro direito")) {
-    fill(0, 255, 0);
-  } else {
-    fill(150);
-  } 
-  rect(cx + 55, cy + 60, 20, 30);
+    if (estaParteAtiva("Pneu dianteiro direito") && imgPneuFrenteDir) {
+      image(imgPneuFrenteDir, cx, cy, larguraCarro, alturaCarro);
+    }
 
-  //asa dianteira (E)
-  if (estaParteAtiva("Asa dianteira")) {
-    fill(0, 255, 0);
-  } else {
-    fill(150);
-  } 
-  rect(cx, cy - 90, 90, 15);
+    if (estaParteAtiva("Pneu traseiro esquerdo") && imgPneuTrasEsq) {
+      image(imgPneuTrasEsq, cx, cy, larguraCarro, alturaCarro);
+    }
 
-  //asa traseira (D)
-  if (estaParteAtiva("Asa traseira")) {
-    fill(0, 255, 0);
-  } else {
-    fill(150);
+    if (estaParteAtiva("Pneu traseiro direito") && imgPneuTrasDir) {
+      image(imgPneuTrasDir, cx, cy, larguraCarro, alturaCarro);
+    }
+
+    if (estaParteAtiva("Asa dianteira") && imgAsaDianteira) {
+      image(imgAsaDianteira, cx, cy, larguraCarro, alturaCarro);
+    }
+
+    if (estaParteAtiva("Asa traseira") && imgAsaTraseira) {
+      image(imgAsaTraseira, cx, cy, larguraCarro, alturaCarro);
+    }
   }
-  rect(cx, cy + 90, 70, 15);
 
-  //voltar ao modo padrao
+  // voltar aos modos normais
+  imageMode(CORNER);
   rectMode(CORNER);
 }
+
+
 
 
 
@@ -295,4 +311,10 @@ function draw() {
       text("Pontos da última ronda: " + pontos, width / 2, 40);
     }
   }
+}
+
+
+// Ajustar canvas ao redimensionar a janela
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
 }
