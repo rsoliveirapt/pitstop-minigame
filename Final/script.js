@@ -139,7 +139,7 @@ function keyPressed() {
     }
   } else {
     //Erro
-    mensagem = "Errado! Carregaste " + teclaCarregada + ", mas a certa e " + pedidoAtual.tecla + ".";
+    mensagem = "Errado! Carregaste " + teclaCarregada + ", mas a certa é " + pedidoAtual.tecla + ".";
 
     // aumentar erros
     erros++;
@@ -407,7 +407,7 @@ function draw() {
 
     // FEEDBACK (ACERTO/ERRO)
     textSize(16);
-    text(mensagem, width / 2, height - 50);
+    text(mensagem, width / 2, height - 775);
 
     // DESENHAR O CARRO
     desenharCarro();
