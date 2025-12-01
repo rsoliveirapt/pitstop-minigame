@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/addons/p5.sound.min.js"></script>
+    <script src="script.js"></script>
+    <title>Pitstop F1 - Minijogo</title>
+</head>
+<body>
+    <div class="page">
+    <header class="top-bar">
+        <div class="top-left">
+            <h1>Pitstop F1 - Minijogo</h1>
+            <p class="subtitle">
+                V0.1 <br>
+                Disclaimer: Ao pressionar a tecla Espaço, será reproduzido um áudio que pode surpreender o utilizador. Por esse motivo, recomenda-se a redução prévia do volume do dispositivo.
+            </p>
+
+            <button id="start-btn" class="btn-primary">Pressiona ESPACO para iniciar a pitstop</button>
+
+            <p class="hint">
+                Teclas: <span>Q</span>, <span>W</span>, <span>A</span>, <span>S</span>, <span>E</span> ou <span>D</span>
+            </p>
+        </div>
+
+        <div class="top-right">
+            <div class="info-card">
+                <p> Completa o pitstop o mais rápido possivel, completando as peças indicadas</p>
+                <ul>
+                    <li>Certo: ganhas pontos</li>
+                    <li>Errado: perdes pontos e és penalizado</li>
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-area">
+        <div id="game-container"></div>
+    </main>
+
+    <footer class="footer">
+        <small>Trabalho Realizado por Ricardo Oliveira - Programação Criativa</small>
+    </footer>
+    </div>
+ 
+</body>
+</html>
