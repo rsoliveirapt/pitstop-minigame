@@ -3,9 +3,9 @@ let jogoAtivo = false; // indica se o jogo ja comecou
 let tempoInicio = 0; // guarda o momento em que o jogo comecou
 let tempoAtual = 0; // tempo decorrido
 let melhorTempo = null; // melhor tempo registrado
-let emContagemPartida = false;
+let emContagemPartida = false; 
 let tempoInicioContagem = 0;
-let numLuzes = 5;
+let numLuzes = 5; // luzes de partida
 let numLuzesAcesas = 0;
 let somPartida;
 let ultimaLuzTocada = 0;
@@ -16,7 +16,7 @@ let pontos = 0; // pontuacao do jogador
 let erros = 0; // numero de erros cometidos
 let maxErros = 5; // numero maximo de erros permitidos
 
-//Variaveis para os carros
+//Variaveis para o carro
 let imgCarroBase;
 let imgPneuFrenteEsq;
 let imgPneuFrenteDir;
@@ -190,6 +190,7 @@ function estaParteAtiva(nomeParte) {
   return pedidoAtual.nome === nomeParte;
 }
 
+// Função para as luzes de partida
 function atualizarSequenciaPartida() {
   let decorrido = millis() - tempoInicioContagem;
 
@@ -219,6 +220,7 @@ function atualizarSequenciaPartida() {
   }
 }
 
+// Parte visual das luzes de partida
 function desenharLuzesPartida() {
   let larguraTotal = 300;
   let alturaLuz = 40;
@@ -314,7 +316,7 @@ function desenharCarro() {
 
 
 
-
+// Parte Visual - Background IMG pixelart
 function desenharBackground() {
   background(30);
 
@@ -349,7 +351,7 @@ function draw() {
     fill(255);
     textSize(10);
     textAlign(CENTER, CENTER);
-    text("Pressiona ESPACO para iniciar a pitstop", width / 2, height / 2 + 80 );
+    text("Prepara-te! O jogo vai começar em...", width / 2, height / 2 + 80 );
 
     return;
   }
@@ -415,7 +417,7 @@ function draw() {
     fill(255);
     textSize(20);
     textAlign(CENTER, CENTER);
-    text("Clique no botão 'Iniciar Pitstop' para comecar.", width / 2, height / 2);
+    text("Pressiona ESPACO para iniciar a pitstop", width / 2, height / 2);
 
     if (melhorTempo !== null) {
       textSize(16);
