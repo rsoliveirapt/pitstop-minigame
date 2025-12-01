@@ -50,7 +50,7 @@ function preload() {
   // ficheiro base do carro
   imgCarroBase = loadImage("Images/redbull/redbull.svg");
 
-  // peças em destaque
+  // partes em destaque
   imgPneuFrenteEsq = loadImage("Images/redbull/redbull-pneu-dianteiro-esquerdo.svg");
   imgPneuFrenteDir = loadImage("Images/redbull/redbull-pneu-dianteiro-direito.svg");
   imgPneuTrasEsq   = loadImage("Images/redbull/redbull-pneu-traseiro-esquerdo.svg");
@@ -276,7 +276,7 @@ function desenharCarro() {
     rect(cx, cy, 80, 140);
   }
 
-  // 2) desenhar apenas a peça ativa por cima
+  // 2) desenhar apenas a parte ativa por cima
   if (pedidoAtual !== null) {
 
     // ativar overlay verde para destacar parte
